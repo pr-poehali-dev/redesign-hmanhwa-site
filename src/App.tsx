@@ -1,28 +1,43 @@
+import { useState } from 'react';
+import Layout from '@/components/Layout';
+import HomePage from '@/pages/HomePage';
+import CatalogPage from '@/pages/CatalogPage';
+import SearchPage from '@/pages/SearchPage';
+import BookmarksPage from '@/pages/BookmarksPage';
+import ProfilePage from '@/pages/ProfilePage';
+import TagsPage from '@/pages/TagsPage';
+import MangaPage from '@/pages/MangaPage';
+import ReaderPage from '@/pages/ReaderPage';
+import NewsPage from '@/pages/NewsPage';
+import NewsItemPage from '@/pages/NewsItemPage';
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+type Page = 'home' | 'catalog' | 'search' | 'bookmarks' | 'profile' | 'tags' | 'manga' | 'reader' | 'news' | 'newsItem';
 
-const queryClient = new QueryClient();
+export default function App() {
+  const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [pageParams, setPageParams] = useState<Record<string, string>>({});
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  const navigate = (page: string, params?: Record<string, string>) => {
+    setCurrentPage(page as Page);
+    setPageParams(params || {});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-export default App;
+  if (currentPage === 'reader') {
+    return <ReaderPage onNavigate={navigate} params={pageParams} />;
+  }
+
+  return (
+    <Layout currentPage={currentPage} onNavigate={navigate}>
+      {currentPage === 'home' && <HomePage onNavigate={navigate} />}
+      {currentPage === 'catalog' && <CatalogPage onNavigate={navigate} />}
+      {currentPage === 'search' && <SearchPage onNavigate={navigate} />}
+      {currentPage === 'bookmarks' && <BookmarksPage onNavigate={navigate} />}
+      {currentPage === 'profile' && <ProfilePage onNavigate={navigate} />}
+      {currentPage === 'tags' && <TagsPage onNavigate={navigate} params={pageParams} />}
+      {currentPage === 'manga' && <MangaPage onNavigate={navigate} params={pageParams} />}
+      {currentPage === 'news' && <NewsPage onNavigate={navigate} />}
+      {currentPage === 'newsItem' && <NewsItemPage onNavigate={navigate} params={pageParams} />}
+    </Layout>
+  );
+}
