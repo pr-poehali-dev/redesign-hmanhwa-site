@@ -44,23 +44,35 @@ export default function HomePage({ onNavigate }: HomePageProps) {
   return (
     <div className="pb-20 md:pb-0">
       {/* ─── HERO ─── */}
-      <section className="relative h-[480px] md:h-[560px] overflow-hidden">
+      <section className="relative h-[480px] md:h-[560px] overflow-hidden scanlines">
         <div
           className="absolute inset-0 bg-cover bg-center transition-all duration-700 scale-105"
           style={{ backgroundImage: `url(${hero.cover})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/75 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/20" />
+        {/* Dark sci-fi overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/40" />
+        {/* Grid overlay */}
+        <div className="absolute inset-0 grid-bg-sm opacity-40" />
+        {/* Cyan corner accents */}
+        <div className="absolute top-4 left-4 w-8 h-8 pointer-events-none" style={{ borderTop: '2px solid hsl(180 100% 50% / 0.6)', borderLeft: '2px solid hsl(180 100% 50% / 0.6)' }} />
+        <div className="absolute bottom-4 right-4 w-8 h-8 pointer-events-none" style={{ borderBottom: '2px solid hsl(140 100% 50% / 0.6)', borderRight: '2px solid hsl(140 100% 50% / 0.6)' }} />
+        {/* Horizontal neon lines */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50" />
 
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="max-w-lg animate-fade-in">
             <div className="flex items-center gap-2 mb-3">
-              <span className="bg-primary text-white text-[10px] font-oswald font-bold px-2 py-0.5 rounded uppercase tracking-widest animate-pulse-glow">
-                ★ В тренде
+              <span className="text-[10px] font-oswald font-bold px-2 py-0.5 rounded uppercase tracking-widest animate-pulse-glow" style={{ background: 'hsl(180 100% 50%)', color: '#000', boxShadow: '0 0 12px hsl(180 100% 50% / 0.6)' }}>
+                ▶ В тренде
               </span>
-              <span className="text-muted-foreground text-xs font-golos">#{heroIndex + 1} эта неделя</span>
+              <div className="flex items-center gap-1">
+                <div className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse" />
+                <span className="text-cyan-400/70 text-xs font-golos font-mono">#{heroIndex + 1} эта неделя</span>
+              </div>
             </div>
-            <h1 className="font-oswald text-4xl md:text-6xl font-bold leading-none mb-2 text-glow">
+            <h1 className="font-oswald text-4xl md:text-6xl font-bold leading-none mb-2 text-glow" style={{ color: 'hsl(180 100% 90%)' }}>
               {hero.titleRu.toUpperCase()}
             </h1>
             <p className="font-golos text-xs text-muted-foreground mb-4 tracking-widest uppercase">
@@ -93,14 +105,16 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             <div className="flex gap-2">
               <button
                 onClick={() => onNavigate('manga', { id: hero.id })}
-                className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded font-oswald font-semibold uppercase tracking-wide transition-all glow-red text-sm"
+                className="flex items-center gap-2 px-5 py-2.5 rounded font-oswald font-semibold uppercase tracking-wide transition-all text-sm font-mono"
+                style={{ background: 'hsl(180 100% 50%)', color: '#000', boxShadow: '0 0 20px hsl(180 100% 50% / 0.5), 0 0 40px hsl(180 100% 50% / 0.2)' }}
               >
                 <Icon name="BookOpen" size={15} />
                 Читать
               </button>
               <button
                 onClick={() => onNavigate('manga', { id: hero.id })}
-                className="flex items-center gap-2 bg-black/40 hover:bg-black/60 border border-white/20 text-white px-5 py-2.5 rounded font-oswald font-semibold uppercase tracking-wide transition-all text-sm"
+                className="flex items-center gap-2 px-5 py-2.5 rounded font-oswald font-semibold uppercase tracking-wide transition-all text-sm text-cyan-300 hover:text-cyan-100"
+                style={{ background: 'transparent', border: '1px solid hsl(180 100% 50% / 0.4)', boxShadow: '0 0 10px hsl(180 100% 50% / 0.1)', backdropFilter: 'blur(4px)' }}
               >
                 <Icon name="Info" size={15} />
                 Подробнее
@@ -139,11 +153,10 @@ export default function HomePage({ onNavigate }: HomePageProps) {
         {/* ─── GENRES ─── */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <div className="w-0.5 h-5 bg-primary" />
-              <h2 className="font-oswald text-xl font-bold uppercase tracking-wide">Жанры</h2>
+            <div className="section-line">
+              <h2 className="font-oswald text-xl font-bold uppercase tracking-wide" style={{ color: 'hsl(180 100% 80%)' }}>Жанры</h2>
             </div>
-            <button onClick={() => onNavigate('catalog')} className="text-primary text-xs font-golos hover:underline flex items-center gap-1">
+            <button onClick={() => onNavigate('catalog')} className="text-xs font-golos flex items-center gap-1 hover:underline" style={{ color: 'hsl(180 100% 50%)' }}>
               Все <Icon name="ChevronRight" size={12} />
             </button>
           </div>
@@ -152,13 +165,16 @@ export default function HomePage({ onNavigate }: HomePageProps) {
               <button
                 key={g.label}
                 onClick={() => onNavigate('catalog')}
-                className={`group flex flex-col items-center gap-1.5 py-3 px-1 bg-card border border-border rounded-lg hover:border-primary/60 hover:bg-primary/5 transition-all animate-fade-in stagger-${Math.min(i + 1, 6)}`}
+                className={`group flex flex-col items-center gap-1.5 py-3 px-1 rounded-lg transition-all animate-fade-in stagger-${Math.min(i + 1, 6)} relative overflow-hidden`}
+                style={{ background: 'hsl(220 20% 8%)', border: '1px solid hsl(180 100% 50% / 0.15)' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'hsl(180 100% 50% / 0.5)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 12px hsl(180 100% 50% / 0.15)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'hsl(180 100% 50% / 0.15)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none'; }}
               >
-                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center group-hover:bg-primary/20 transition-all">
-                  <Icon name={g.icon} size={16} className="text-primary" />
+                <div className="w-8 h-8 rounded-full flex items-center justify-center transition-all" style={{ background: 'hsl(180 100% 50% / 0.1)' }}>
+                  <Icon name={g.icon} size={16} style={{ color: 'hsl(180 100% 55%)' }} />
                 </div>
-                <span className="font-golos text-[10px] text-foreground leading-none">{g.label}</span>
-                <span className="font-golos text-[9px] text-muted-foreground">{g.count.toLocaleString()}</span>
+                <span className="font-golos text-[10px] leading-none" style={{ color: 'hsl(180 80% 80%)' }}>{g.label}</span>
+                <span className="font-mono text-[9px]" style={{ color: 'hsl(180 100% 50% / 0.5)' }}>{g.count.toLocaleString()}</span>
               </button>
             ))}
           </div>
@@ -167,11 +183,14 @@ export default function HomePage({ onNavigate }: HomePageProps) {
         {/* ─── POPULAR BY VIEWS ─── */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <div className="w-0.5 h-5 bg-orange-500" />
-              <h2 className="font-oswald text-xl font-bold uppercase tracking-wide">Популярное по просмотрам</h2>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <div className="w-px h-5 bg-gradient-to-b from-orange-400 to-cyan-400" style={{ boxShadow: '0 0 6px hsl(180 100% 50% / 0.5)' }} />
+              </div>
+              <h2 className="font-oswald text-xl font-bold uppercase tracking-wide" style={{ color: 'hsl(180 100% 80%)' }}>Популярное по просмотрам</h2>
+              <span className="font-mono text-[9px] px-1.5 py-0.5 rounded" style={{ color: 'hsl(180 100% 50%)', border: '1px solid hsl(180 100% 50% / 0.3)', background: 'hsl(180 100% 50% / 0.05)' }}>LIVE</span>
             </div>
-            <button onClick={() => onNavigate('catalog')} className="text-primary text-xs font-golos hover:underline flex items-center gap-1">
+            <button onClick={() => onNavigate('catalog')} className="text-xs font-golos flex items-center gap-1 hover:underline" style={{ color: 'hsl(180 100% 50%)' }}>
               Все <Icon name="ChevronRight" size={12} />
             </button>
           </div>
@@ -196,16 +215,16 @@ export default function HomePage({ onNavigate }: HomePageProps) {
           {/* Recent chapter updates */}
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-0.5 h-5 bg-accent" />
-                <h2 className="font-oswald text-xl font-bold uppercase tracking-wide">Лента новых глав</h2>
+              <div className="section-line">
+                <h2 className="font-oswald text-xl font-bold uppercase tracking-wide" style={{ color: 'hsl(180 100% 80%)' }}>Лента новых глав</h2>
+                <span className="font-mono text-[9px] px-1.5 py-0.5 rounded animate-pulse" style={{ color: 'hsl(140 100% 50%)', border: '1px solid hsl(140 100% 50% / 0.4)', background: 'hsl(140 100% 50% / 0.05)' }}>● ONLINE</span>
               </div>
-              <button onClick={() => onNavigate('catalog')} className="text-primary text-xs font-golos hover:underline flex items-center gap-1">
+              <button onClick={() => onNavigate('catalog')} className="text-xs font-golos flex items-center gap-1 hover:underline" style={{ color: 'hsl(180 100% 50%)' }}>
                 Ещё <Icon name="ChevronRight" size={12} />
               </button>
             </div>
 
-            <div className="bg-card border border-border rounded-lg overflow-hidden divide-y divide-border">
+            <div className="rounded-lg overflow-hidden divide-y" style={{ background: 'hsl(220 20% 7%)', border: '1px solid hsl(180 100% 50% / 0.15)' }}>
               {RECENT_UPDATES.map((upd, i) => {
                 const manga = MOCK_MANGA.find(m => m.id === upd.mangaId);
                 if (!manga) return null;
@@ -213,27 +232,30 @@ export default function HomePage({ onNavigate }: HomePageProps) {
                   <div
                     key={`${upd.mangaId}-${upd.chapter}`}
                     onClick={() => onNavigate('reader', { id: manga.id, chapter: String(upd.chapter) })}
-                    className={`flex items-center gap-3 px-3 py-2.5 hover:bg-secondary/50 cursor-pointer transition-all group ${i % 2 === 0 ? '' : 'bg-secondary/20'}`}
+                    className="flex items-center gap-3 px-3 py-2.5 cursor-pointer transition-all group"
+                    style={{ borderColor: 'hsl(180 100% 50% / 0.08)' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'hsl(180 100% 50% / 0.05)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
                   >
-                    <img src={manga.cover} alt={manga.titleRu} className="w-10 h-14 object-cover rounded flex-shrink-0" />
+                    <img src={manga.cover} alt={manga.titleRu} className="w-10 h-14 object-cover rounded flex-shrink-0" style={{ boxShadow: '0 0 8px hsl(180 100% 50% / 0.2)' }} />
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-oswald font-semibold text-xs group-hover:text-primary transition-colors truncate">
+                      <h4 className="font-oswald font-semibold text-xs transition-colors truncate group-hover:text-cyan-300" style={{ color: 'hsl(180 80% 85%)' }}>
                         {manga.titleRu}
                       </h4>
                       <div className="flex items-center gap-1.5 mt-0.5">
-                        <span className="text-primary text-[10px] font-golos font-medium">
+                        <span className="text-[10px] font-golos font-medium font-mono" style={{ color: 'hsl(180 100% 50%)' }}>
                           Глава {upd.chapter}
                           {upd.chapterTitle ? `: ${upd.chapterTitle}` : ''}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">
                         <span className="text-muted-foreground text-[10px] font-golos">{upd.date}</span>
-                        <span className="text-muted-foreground text-[10px] flex items-center gap-0.5">
+                        <span className="text-[10px] flex items-center gap-0.5" style={{ color: 'hsl(180 60% 45%)' }}>
                           <Icon name="Eye" size={9} />{upd.views}
                         </span>
                       </div>
                     </div>
-                    <Icon name="ChevronRight" size={14} className="text-muted-foreground group-hover:text-primary flex-shrink-0" />
+                    <Icon name="ChevronRight" size={14} className="flex-shrink-0 group-hover:text-cyan-400" style={{ color: 'hsl(180 50% 35%)' }} />
                   </div>
                 );
               })}
@@ -241,7 +263,8 @@ export default function HomePage({ onNavigate }: HomePageProps) {
 
             <button
               onClick={() => onNavigate('catalog')}
-              className="w-full mt-2 py-2.5 bg-secondary border border-border rounded-lg text-xs font-golos text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all"
+              className="w-full mt-2 py-2.5 rounded-lg text-xs font-oswald uppercase tracking-widest transition-all"
+              style={{ background: 'hsl(220 20% 8%)', border: '1px solid hsl(180 100% 50% / 0.2)', color: 'hsl(180 60% 55%)' }}
             >
               Загрузить ещё
             </button>
@@ -250,11 +273,10 @@ export default function HomePage({ onNavigate }: HomePageProps) {
           {/* News sidebar */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-0.5 h-5 bg-blue-500" />
-                <h2 className="font-oswald text-xl font-bold uppercase tracking-wide">Новости</h2>
+              <div className="section-line">
+                <h2 className="font-oswald text-xl font-bold uppercase tracking-wide" style={{ color: 'hsl(180 100% 80%)' }}>Новости</h2>
               </div>
-              <button onClick={() => onNavigate('news')} className="text-primary text-xs font-golos hover:underline flex items-center gap-1">
+              <button onClick={() => onNavigate('news')} className="text-xs font-golos flex items-center gap-1 hover:underline" style={{ color: 'hsl(180 100% 50%)' }}>
                 Все <Icon name="ChevronRight" size={12} />
               </button>
             </div>
@@ -264,19 +286,22 @@ export default function HomePage({ onNavigate }: HomePageProps) {
                 <article
                   key={news.id}
                   onClick={() => onNavigate('newsItem', { id: news.id })}
-                  className="group flex gap-3 cursor-pointer"
+                  className="group flex gap-3 cursor-pointer p-2 rounded transition-all"
+                  style={{ border: '1px solid hsl(180 100% 50% / 0.1)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'hsl(180 100% 50% / 0.35)'; (e.currentTarget as HTMLElement).style.background = 'hsl(180 100% 50% / 0.04)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'hsl(180 100% 50% / 0.1)'; (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
                 >
-                  <div className="relative w-20 h-16 flex-shrink-0 rounded overflow-hidden">
+                  <div className="relative w-20 h-16 flex-shrink-0 rounded overflow-hidden" style={{ boxShadow: '0 0 8px hsl(180 100% 50% / 0.15)' }}>
                     <img src={news.cover} alt={news.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                     {i === 0 && (
-                      <div className="absolute top-0 left-0 bg-primary text-white text-[9px] font-oswald px-1 py-0.5">
+                      <div className="absolute top-0 left-0 text-[9px] font-oswald px-1 py-0.5" style={{ background: 'hsl(180 100% 50%)', color: '#000' }}>
                         ГЛАВНОЕ
                       </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="text-[9px] text-primary font-oswald uppercase tracking-wide">{news.category}</span>
-                    <h4 className="font-golos font-medium text-xs leading-snug mt-0.5 line-clamp-2 group-hover:text-primary transition-colors">
+                    <span className="text-[9px] font-oswald uppercase tracking-wide font-mono" style={{ color: 'hsl(180 100% 55%)' }}>{news.category}</span>
+                    <h4 className="font-golos font-medium text-xs leading-snug mt-0.5 line-clamp-2 transition-colors group-hover:text-cyan-300" style={{ color: 'hsl(180 60% 85%)' }}>
                       {news.title}
                     </h4>
                     <span className="text-[10px] text-muted-foreground font-golos mt-1 block">{news.date}</span>
@@ -287,9 +312,8 @@ export default function HomePage({ onNavigate }: HomePageProps) {
 
             {/* Popular by bookmarks */}
             <div className="mt-6">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-0.5 h-5 bg-primary" />
-                <h2 className="font-oswald text-xl font-bold uppercase tracking-wide">По закладкам</h2>
+              <div className="section-line mb-3">
+                <h2 className="font-oswald text-xl font-bold uppercase tracking-wide" style={{ color: 'hsl(180 100% 80%)' }}>По закладкам</h2>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {MOCK_MANGA.slice(0, 6).map((manga, i) => (
@@ -310,11 +334,12 @@ export default function HomePage({ onNavigate }: HomePageProps) {
         {/* ─── MANHWA ON HUB ─── */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <div className="w-0.5 h-5 bg-green-500" />
-              <h2 className="font-oswald text-xl font-bold uppercase tracking-wide">Манхва на хабе</h2>
+            <div className="flex items-center gap-3">
+              <div className="section-line">
+                <h2 className="font-oswald text-xl font-bold uppercase tracking-wide" style={{ color: 'hsl(140 100% 75%)' }}>Манхва на хабе</h2>
+              </div>
             </div>
-            <button onClick={() => onNavigate('catalog')} className="text-primary text-xs font-golos hover:underline flex items-center gap-1">
+            <button onClick={() => onNavigate('catalog')} className="text-xs font-golos flex items-center gap-1 hover:underline" style={{ color: 'hsl(180 100% 50%)' }}>
               Все <Icon name="ChevronRight" size={12} />
             </button>
           </div>
@@ -335,9 +360,8 @@ export default function HomePage({ onNavigate }: HomePageProps) {
         {/* ─── LATEST CHAPTER LIST ─── */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <div className="w-0.5 h-5 bg-primary" />
-              <h2 className="font-oswald text-xl font-bold uppercase tracking-wide">Лента новых глав</h2>
+            <div className="section-line">
+              <h2 className="font-oswald text-xl font-bold uppercase tracking-wide" style={{ color: 'hsl(180 100% 80%)' }}>Лента новых глав</h2>
             </div>
           </div>
           <div className="grid md:grid-cols-2 gap-1.5">
@@ -348,12 +372,15 @@ export default function HomePage({ onNavigate }: HomePageProps) {
                 <div
                   key={`list-${i}`}
                   onClick={() => onNavigate('reader', { id: manga.id, chapter: String(upd.chapter) })}
-                  className="flex items-center gap-2.5 px-3 py-2 bg-card border border-border rounded hover:border-primary/40 cursor-pointer transition-all group"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded cursor-pointer transition-all group"
+                  style={{ background: 'hsl(220 20% 8%)', border: '1px solid hsl(180 100% 50% / 0.12)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'hsl(180 100% 50% / 0.4)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 0 8px hsl(180 100% 50% / 0.1)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'hsl(180 100% 50% / 0.12)'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; }}
                 >
                   <img src={manga.cover} alt={manga.titleRu} className="w-8 h-11 object-cover rounded flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-oswald font-semibold text-[11px] group-hover:text-primary transition-colors truncate">{manga.titleRu}</h4>
-                    <span className="text-primary text-[10px] font-golos">Глава {upd.chapter}</span>
+                    <h4 className="font-oswald font-semibold text-[11px] transition-colors truncate group-hover:text-cyan-300" style={{ color: 'hsl(180 70% 88%)' }}>{manga.titleRu}</h4>
+                    <span className="text-[10px] font-golos font-mono" style={{ color: 'hsl(180 100% 50%)' }}>Глава {upd.chapter}</span>
                   </div>
                   <span className="text-muted-foreground text-[10px] font-golos flex-shrink-0">{upd.date}</span>
                 </div>
@@ -362,7 +389,8 @@ export default function HomePage({ onNavigate }: HomePageProps) {
           </div>
           <button
             onClick={() => onNavigate('catalog')}
-            className="w-full mt-3 py-3 bg-secondary border border-border rounded-lg text-xs font-oswald uppercase tracking-widest text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all"
+            className="w-full mt-3 py-3 rounded-lg text-xs font-oswald uppercase tracking-widest transition-all"
+            style={{ background: 'hsl(220 20% 7%)', border: '1px solid hsl(180 100% 50% / 0.2)', color: 'hsl(180 60% 55%)' }}
           >
             Загрузить ещё
           </button>
